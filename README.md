@@ -6,11 +6,133 @@ The Fenom parser provided by pdoTools is required in order to work with EasyForm
 More information about validation and all the, by default, built in validation rules please read the [validation section from Laravel](https://laravel.com/docs/9.x/validation). 
 
 - [EasyForm](#easyform)
-  - [Example usage](#example-usage)
+    - [Requirements](#requirements)
+    - [Key features](#key-features)
+    - [TODO](#todo)
+  - [Default plugins](#default-plugins)
   - [Add your own plugins](#add-your-own-plugins)
+    - [Plugin events](#plugin-events)
   - [Add your own validation rules](#add-your-own-validation-rules)
+  - [Example usage](#example-usage)
   - [Development](#development)
     - [Lang file conversion](#lang-file-conversion)
+
+### Requirements
+- pdoTools: pdoTools is required due to the Fenom parser it provides.
+
+### Key features
+1. File driven: Designed to work using PHP classes and file based chunks. 
+2. Utilizes Illuminate validation which includes lots of default validation rules.
+3. Comes with useful default plugins
+
+### TODO
+1. Add Recaptcha plugin
+2. Add default login/registration plugins
+
+## Default plugins
+The following plugins are included by default.
+
+| **Plugin**    | **Description**                                                                                                                   |
+|---------------|-----------------------------------------------------------------------------------------------------------------------------------|
+| Email         | Use this plugin to send an email once the form has been submitted.                                                                |
+| AutoResponder | Use this plugin to send an email once the form has been submitted. Works exactly the same as the Email plugin which it's extends. |
+| Redirect      | Redirect the user after form submission by providing a resource id or URL.                                                        |
+
+## Add your own plugins
+Create a plugin class that extends the BasePlugin class and make sure it's loaded by the snippet by adding the path to the scriptproperties.
+
+```
+{set $form = '!EasyForm' | snippet : [
+    'pluginPaths' => [
+        '{base_path}/customplugins/',
+        '{core_path}/customplugins/',
+        '{assets_path}/customplugins/'
+    ],
+    'plugins' => [
+        'Redirect' => [
+            'to' => 2
+        ],
+        'SomePlugin' => []
+    ],
+    'submitVar'     => 'submitvar',
+    'rules'         => [
+        'name'  => ['required'],
+        'email' => ['required', 'email']
+    ]
+]}
+```
+
+```php
+<?php
+
+use Sterc\EasyForm\Plugins\BasePlugin;
+
+class SomePlugin extends BasePlugin
+{
+    public function onInitForm($form, $properties)
+    {
+        $form->request->set('name', 'some value');
+
+        return true;
+    }
+}
+```
+
+### Plugin events
+The following plugin events are available.
+
+| **Event**       | **Description**                                                                                                                                     |
+|-----------------|-----------------------------------------------------------------------------------------------------------------------------------------------------|
+| onInitForm      | Trigged while initialising the form, before rendering it. Can be used for pre-form validation or for setting form values before the form is loaded. |
+| onFormSubmitted | Triggered once form is submitted and validation has been passed.                                                                                    |
+
+## Add your own validation rules
+Adding your own custom validation rules can be done by creating a new class which implements the `Rule` class:
+
+```php
+<?php
+namespace App\Rules;
+ 
+use Illuminate\Contracts\Validation\Rule;
+ 
+class Uppercase implements Rule
+{
+      /**
+     * Determine if the validation rule passes.
+     *
+     * @param  string  $attribute
+     * @param  mixed  $value
+     * @return bool
+     */
+    public function passes($attribute, $value)
+    {
+        return strtoupper($value) === $value;
+    }
+ 
+    /**
+     * Get the validation error message.
+     *
+     * @return string
+     */
+    public function message()
+    {
+        return 'The :attribute must be uppercase.';
+    }
+}
+```
+
+Then add the path where your rule class lives into the rulePaths array and the rule to the field you'd like to validate by defining the fully classified class name as a string, like so: `'new App\Rules\Uppercase'`.
+
+```
+{set $form = '!EasyForm' | snippet : [
+    'rulePaths' => [
+        '{base_path}/customrules/',
+    ',
+    'rules' => [
+        'name'  => ['required', 'new App\Rules\Uppercase'],
+    ]
+],
+```
 
 ## Example usage
 Please view this extensive example for all possible properties and usage:
@@ -38,7 +160,7 @@ Please view this extensive example for all possible properties and usage:
             'html'            => true,
             'convertNewlines' => true,
             'subject'         => 'My subject - [[+name]] {$name}',
-            '_subjectField'   => 'topic',
+            // 'subjectField'   => 'topic', Can be used instead of subject in order to make a dynamic subject based on specified form field value.
             'multiWrapper'    => 'Before {$values} After',
             'multiSeparator'  => ', ',
             'selectEmailToAddresses' => [
@@ -115,8 +237,8 @@ Please view this extensive example for all possible properties and usage:
         <div class="input-group mb-3">
             <select class="form-control {$form->getError('receiver') ? 'is-invalid' : ''}"  name="receiver" placeholder="Receiver">
                 <option value=""></option>
-                <option value="1" {$form->getValue('receiver') === 'sander+select1@sterc.nl' ? 'selected' : ''}>sander+select1@sterc.nl</option>
-                <option value="2" {$form->getValue('receiver') === 'sander+select2@sterc.nl' ? 'selected' : ''}>sander+select2@sterc.nl</option>
+                <option value="1" {$form->getValue('receiver') === 'john+select1@domain.tld' ? 'selected' : ''}>john+select1@domain.tld</option>
+                <option value="2" {$form->getValue('receiver') === 'john+select2@domain.tld' ? 'selected' : ''}>john+select2@domain.tld</option>
             </select>
             
             {if $form->getError('receiver')}
@@ -167,94 +289,6 @@ Please view this extensive example for all possible properties and usage:
     {if $form->isSubmitted() && $form->hasErrors()}
         <p>Form has errors.</p>
     {/if}
-```
-
-## Add your own plugins
-Create a plugin class that extends the BasePlugin class and make sure it's loaded by the snippet by adding the path to the scriptproperties.
-
-```
-{set $form = '!EasyForm' | snippet : [
-    'pluginPaths' => [
-        '{base_path}/customplugins/',
-        '{core_path}/customplugins/',
-        '{assets_path}/customplugins/'
-    ],
-    'plugins' => [
-        'Redirect' => [
-            'to' => 2
-        ],
-        'SomePlugin' => []
-    ],
-    'submitVar'     => 'submitvar',
-    'rules'         => [
-        'name'  => ['required'],
-        'email' => ['required', 'email']
-    ]
-]}
-```
-
-```php
-<?php
-
-use Sterc\EasyForm\Plugins\BasePlugin;
-
-class SomePlugin extends BasePlugin
-{
-    public function onInitForm($form, $properties)
-    {
-        $form->request->set('name', 'some value');
-
-        return true;
-    }
-}
-```
-
-## Add your own validation rules
-Adding your own custom validation rules can be done by creating a new class which implements the `Rule` class:
-
-```php
-<?php
-namespace App\Rules;
- 
-use Illuminate\Contracts\Validation\Rule;
- 
-class Uppercase implements Rule
-{
-      /**
-     * Determine if the validation rule passes.
-     *
-     * @param  string  $attribute
-     * @param  mixed  $value
-     * @return bool
-     */
-    public function passes($attribute, $value)
-    {
-        return strtoupper($value) === $value;
-    }
- 
-    /**
-     * Get the validation error message.
-     *
-     * @return string
-     */
-    public function message()
-    {
-        return 'The :attribute must be uppercase.';
-    }
-}
-```
-
-Then add the path where your rule class lives into the rulePaths array and the rule to the field you'd like to validate by defining the fully classified class name as a string, like so: `'new App\Rules\Uppercase'`.
-
-```
-{set $form = '!EasyForm' | snippet : [
-    'rulePaths' => [
-        '{base_path}/customrules/',
-    ',
-    'rules' => [
-        'name'  => ['required', 'new App\Rules\Uppercase'],
-    ]
-],
 ```
 
 ## Development
