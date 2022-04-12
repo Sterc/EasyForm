@@ -1,0 +1,19 @@
+{
+    "name": "sterc/easyform",
+    "description": "EasyForm is a dynamic form processing snippet for MODX Revolution developers.",
+    "keywords": [
+      "modx",
+      "easyform"
+    ],
+    "require": {
+        "php": ">=8",
+        "illuminate/filesystem": "^9",
+        "illuminate/translation": "^9",
+        "illuminate/validation": "^9"
+    },
+    "autoload": {
+      "psr-4": {
+        "Sterc\\": "src/"
+      }
+    }
+}

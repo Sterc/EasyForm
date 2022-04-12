@@ -1,0 +1,110 @@
+<?php return array (
+  'unique_key' => 'category',
+  'preserve_keys' => false,
+  'update_object' => true,
+  'related_objects' => 
+  array (
+    'Snippets' => 
+    array (
+      '6c06575a4d0c4f7d9f51468e0c3576d2' => 
+      array (
+        'preserve_keys' => false,
+        'update_object' => true,
+        'unique_key' => 'name',
+        'class' => 'MODX\\Revolution\\modSnippet',
+        'object' => '{"id":null,"source":0,"property_preprocess":0,"name":"EasyForm","description":"","editor_type":0,"category":0,"cache_type":0,"snippet":"$modelPath = $modx->getOption(\\n    \'easyform.core_path\',\\n    null,\\n    $modx->getOption(\'core_path\', null, MODX_CORE_PATH) . \'components\\/easyform\\/\'\\n) . \'model\\/easyform\\/\';\\n$modx->loadClass(\'EasyForm\', $modelPath, true, true);\\n\\n$form = new EasyForm($modx, $scriptProperties);\\n\\nreturn $form->processForm();","locked":0,"properties":"a:0:{}","moduleguid":"","static":0,"static_file":"","content":"$modelPath = $modx->getOption(\\n    \'easyform.core_path\',\\n    null,\\n    $modx->getOption(\'core_path\', null, MODX_CORE_PATH) . \'components\\/easyform\\/\'\\n) . \'model\\/easyform\\/\';\\n$modx->loadClass(\'EasyForm\', $modelPath, true, true);\\n\\n$form = new EasyForm($modx, $scriptProperties);\\n\\nreturn $form->processForm();"}',
+        'guid' => '65eef399fb3ab7ca593f9c5c9574ba42',
+        'native_key' => NULL,
+        'signature' => 'fcebc1effbbcba8ead7f4a6e664d4859',
+      ),
+    ),
+  ),
+  'related_object_attributes' => 
+  array (
+    'Children' => 
+    array (
+      'preserve_keys' => false,
+      'update_object' => true,
+      'unique_key' => 
+      array (
+        0 => 'parent',
+        1 => 'category',
+      ),
+    ),
+    'Snippets' => 
+    array (
+      'preserve_keys' => false,
+      'update_object' => true,
+      'unique_key' => 'name',
+    ),
+    'Chunks' => 
+    array (
+      'preserve_keys' => false,
+      'update_object' => true,
+      'unique_key' => 'name',
+    ),
+    'Templates' => 
+    array (
+      'preserve_keys' => false,
+      'update_object' => true,
+      'unique_key' => 'templatename',
+    ),
+    'TemplateVars' => 
+    array (
+      'preserve_keys' => false,
+      'update_object' => true,
+      'unique_key' => 'name',
+    ),
+    'PropertySets' => 
+    array (
+      'preserve_keys' => false,
+      'update_object' => true,
+      'unique_key' => 'name',
+    ),
+    'Plugins' => 
+    array (
+      'unique_key' => 'name',
+      'preserve_keys' => false,
+      'update_object' => true,
+      'related_objects' => true,
+      'related_object_attributes' => 
+      array (
+        'PluginEvents' => 
+        array (
+          'preserve_keys' => true,
+          'update_object' => true,
+          'unique_key' => 
+          array (
+            0 => 'pluginid',
+            1 => 'event',
+          ),
+          'related_objects' => true,
+          'related_object_attributes' => 
+          array (
+            'PropertySet' => 
+            array (
+              'unique_key' => 'name',
+              'preserve_keys' => false,
+              'update_object' => false,
+            ),
+          ),
+        ),
+      ),
+    ),
+  ),
+  'resolve' => 
+  array (
+    0 => 
+    array (
+      'type' => 'php',
+      'body' => '{"type":"php","snippets":{"EasyForm":[]},"chunks":[],"plugins":[],"templates":[],"source":"easyform-1.0.0-pl\\/MODX\\/Revolution\\/modCategory\\/03516b49106a9a1dc1e4a5a52fce9883.gpm.resolve.element_property_set.resolver","name":"gpm.resolve.element_property_set"}',
+    ),
+  ),
+  'vehicle_class' => 'xPDO\\Transport\\xPDOObjectVehicle',
+  'guid' => '7b32c16933c0458c3146a73e92df1cb6',
+  'package' => '',
+  'class' => 'MODX\\Revolution\\modCategory',
+  'signature' => '03516b49106a9a1dc1e4a5a52fce9883',
+  'native_key' => NULL,
+  'object' => '{"id":null,"parent":0,"category":"EasyForm","rank":0}',
+);

@@ -1,0 +1,9 @@
+name: EasyForm
+lowCaseName: easyform
+description: Handle forms using EasyForm and the Fenom parser.
+author: Sander Drenth
+version: 1.0.0
+
+snippets:
+  - name: EasyForm
+    file: easyform.snippet.php
