@@ -5,7 +5,6 @@ namespace Sterc\EasyForm\Plugins;
 use MODX\Revolution\Mail\modPHPMailer;
 use MODX\Revolution\Mail\modMail;
 use MODX\Revolution\modX;
-use PHPMailer\PHPMailer\SMTP;
 use xPDO\xPDO;
 
 class Email extends BasePlugin
