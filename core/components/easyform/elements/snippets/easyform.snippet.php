@@ -1,5 +1,4 @@
 <?php
-
 $modelPath = $modx->getOption(
     'easyform.core_path',
     null,
