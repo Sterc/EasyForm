@@ -9,7 +9,8 @@
         "php": ">=8",
         "illuminate/filesystem": "^9",
         "illuminate/translation": "^9",
-        "illuminate/validation": "^9"
+        "illuminate/validation": "^9",
+        "google/recaptcha": "^1.2"
     },
     "autoload": {
       "psr-4": {
